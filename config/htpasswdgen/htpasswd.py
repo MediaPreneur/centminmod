@@ -39,7 +39,7 @@ class HtpasswdFile:
             if os.path.exists(self.filename):
                 self.load()
             else:
-                raise Exception("%s does not exist" % self.filename)
+                raise Exception(f"{self.filename} does not exist")
 
     def load(self):
         """Read the htpasswd file into memory."""
@@ -58,9 +58,9 @@ class HtpasswdFile:
     def update(self, username, password):
         """Replace the entry for the given user, or add it if new."""
         pwhash = crypt.crypt(password, salt())
-        matching_entries = [entry for entry in self.entries
-                            if entry[0] == username]
-        if matching_entries:
+        if matching_entries := [
+            entry for entry in self.entries if entry[0] == username
+        ]:
             matching_entries[0][1] = pwhash
         else:
             self.entries.append([username, pwhash])
@@ -90,7 +90,7 @@ def main():
         """Utility function for displaying fatal error messages with usage
         help.
         """
-        sys.stderr.write("Syntax error: " + msg)
+        sys.stderr.write(f"Syntax error: {msg}")
         sys.stderr.write(parser.get_usage())
         sys.exit(1)
 
